@@ -1,5 +1,7 @@
 # Sistema de Livraria Versão 1.0
 
+import re
+
 catalogo = []
 
 
@@ -98,7 +100,7 @@ class Livros:
             print("Pesquisar nome")
             titulo = input("==> Insira o nome do livro: ")
             for livro in catalogo:
-                if livro["titulo"].lower() == titulo.lower():
+                if re.search(titulo, livro["titulo"], re.IGNORECASE):
                     Livros.info(livro)
                 else:
                     print("Livro(s) não encontrado(s)!")
@@ -112,7 +114,7 @@ class Livros:
             print("Pesquisar categoria")
             categoria = input("==> Insira a categoria do(s) livro(s): ")
             for livro in catalogo:
-                if livro["area"].lower() == categoria.lower():
+                if re.search(categoria, livro["area"], re.IGNORECASE):
                     Livros.info(livro)
                 else:
                     print("Categoria não encontrada!")

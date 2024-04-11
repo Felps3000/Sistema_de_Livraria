@@ -1,5 +1,7 @@
 # Sistema de Livraria Versão 2.0
 
+import re
+
 catalogo = []
 
 
@@ -101,7 +103,7 @@ class Livros:
             print("Pesquisar nome")
             titulo = input("==> Insira o nome do livro: ")
             for livro in catalogo:
-                if livro["titulo"].lower() == titulo.lower():
+                if re.search(titulo, livro["titulo"], re.IGNORECASE):
                     Livros.info(livro)
                 else:
                     print("Livro(s) não encontrado(s)!")
@@ -115,10 +117,10 @@ class Livros:
             print("Pesquisar categoria")
             categoria = input("==> Insira a categoria do(s) livro(s): ")
             for livro in catalogo:
-                if livro["area"].lower() == categoria.lower():
+                if re.search(categoria, livro["area"], re.IGNORECASE):
                     Livros.info(livro)
                 else:
-                    print("Categoria não encontrada!")
+                    print("Categoria não encontrada!"")
                     break
         else:
             print("Catálogo vazio!")
@@ -203,7 +205,7 @@ class Livros:
     @staticmethod
     def check_alteracao():
         if Livros.alteracao:
-            print("==> Há dados não salvos, deseja salvar antes de sair?\n[S]im | [N]ão ")
+            print("==> Há dados não salvos, deseja salvar antes de sair?\n[S]im | [N]ão")
             match input().lower():
                 case "s":
                     Livros.atualizar_arquivo()
@@ -215,7 +217,6 @@ class Livros:
                 case str():
                     print("\nOpção inválida!\n")
                     menu()
-
         else:
             print("\nFinalizando sistema...")
             exit()
