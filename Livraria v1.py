@@ -1,20 +1,7 @@
-# Sistema de Livraria Versão 1.0 BETA 1
+# Sistema de Livraria Versão 1.0
 
-produtos = []
+catalogo = []
 
-
-def cadastrar():
-    try:
-        produtos.append(Livros(str((input("Insira o título do livro: "))),
-                               int((input("Insira o código do livro: "))),
-                               str((input("Insira a editora do livro: "))),
-                               str((input("Insira a área do livro: "))),
-                               int((input("Insira o ano do livro: "))),
-                               float((input("Insira o valor do livro: "))),
-                               int((input("Insira a quantidade disponível de livros: ")))))
-        print("\nLivro cadastrado com sucesso!\n")
-    except ValueError:
-        print("\nO valor inserido não é válido!\n")
 
 class Livros:
     def __init__(self, titulo, codigo, editora, area, ano, valor, estoque):
@@ -26,47 +13,152 @@ class Livros:
         self.valor = valor
         self.estoque = estoque
 
-    def info(self):
-        print(f">>>>> Cod#{self.codigo}\n"
-              f"Título/Editora: {self.titulo}/{self.editora}\n"
-              f"Categoria: {self.area}\n"
-              f"Ano: {self.ano}\n"
-              f"Valor: R$ {self.valor:.2f}\n"
-              f"Estoque: {self.estoque} unidades\n"
-              f"Valor total em estoque: R$ {self.valor * self.estoque:.2f}\n"
+    def catalogar(self):
+        livro = {
+            "titulo": self.titulo,
+            "codigo": self.codigo,
+            "editora": self.editora,
+            "area": self.area,
+            "ano": self.ano,
+            "valor": self.valor,
+            "estoque": self.estoque
+        }
+
+        catalogo.append(livro)
+
+    @staticmethod
+    def info(livro):
+        print(f"\n>>>>> Cod#{livro['codigo']}\n"
+              f"Título/Editora: {livro['titulo']}/{livro['editora']}\n"
+              f"Categoria: {livro['area']}\n"
+              f"Ano: {livro['ano']}\n"
+              f"Valor: R$ {livro['ano']:.2f}\n"
+              f"Estoque: {livro['estoque']} unidades\n"
+              f"Valor total em estoque: R$ {livro['valor'] * livro['estoque']:.2f}"
               )
 
-produtos.append(Livros("BUNDA", "123456", "EDITORA", "AREA", "1991", 10, 10))
-produtos.append(Livros("TITULO2", "78910111213", "EDITORA2", "AREA2", "1992", 20, 20))
-produtos.append(Livros("TITULO3", "14151617", "EDITORA3", "AREA3", "1993", 30, 30))
-produtos.append(Livros("TITULO3", "14151617", "EDITORA3", "AREA3", "1993", 40, 40))
+    @staticmethod
+    def cadastrar():
+        try:
+            cadastro = Livros(
+                str((input("==> Insira o título do livro: "))),
+                int((input("==> Insira o código do livro: "))),
+                str((input("==> Insira a editora do livro: "))),
+                str((input("==> Insira a área do livro: "))),
+                int((input("==> Insira o ano do livro: "))),
+                float((input("==> Insira o valor do livro: "))),
+                int((input("==> Insira a quantidade disponível de livros: "))))
 
+            cadastro.catalogar()
+            print("\nLivro cadastrado com sucesso!")
 
-def pesquisar(atributo, valor):
-    match atributo:
-        case "nome":
-            for livro in produtos:
-                if valor.lower() in livro.titulo.lower():
-                    return print(livro.info())
-                    break
+        except ValueError:
+            print("\nO valor inserido não é válido!")
+
+    @staticmethod
+    def cadastro_temp():
+        cadastro1 = Livros(
+            "bicho",
+            123,
+            "jesus",
+            "biologia",
+            123,
+            123,
+            123
+        )
+
+        cadastro2 = Livros(
+            "bicho",
+            123,
+            "deus",
+            "humanidade",
+            123,
+            123,
+            123
+        )
+
+        cadastro1.catalogar()
+        cadastro2.catalogar()
+
+    @staticmethod
+    def listar():
+        if catalogo:
+            for i, livros in enumerate(catalogo, start=1):
+                Livros.info(livros)
+        else:
+            print("Catálogo vazio!")
+
+    @staticmethod
+    def pesquisar_nome():
+        if catalogo:
+            print("Pesquisar nome")
+            titulo = input("==> Insira o nome do livro: ")
+            for livro in catalogo:
+                if livro["titulo"].lower() == titulo.lower():
+                    Livros.info(livro)
                 else:
-                    print("Livro não encontrado!\n")
+                    print("Livro não encontrado!")
                     break
+        else:
+            print("Catálogo vazio!")
 
-def menorPreco(preco):
-    for livro in produtos:
-        while livro.valor < preco:
-            print(livro.info())
+    @staticmethod
+    def pesquisar_categoria():
+        if catalogo:
+            print("Pesquisar categoria")
+            categoria = input("==> Insira a categoria do(s) livro(s): ")
+            for livro in catalogo:
+                if livro["area"].lower() == categoria.lower():
+                    Livros.info(livro)
+                else:
+                    print("Categoria não encontrada!")
+                    break
+        else:
+            print("Catálogo vazio!")
 
+    @staticmethod
+    def pesquisar_preco():
+        try:
+            if catalogo:
+                print("Pesquisar preço")
+                preco = float(input("==> Insira o menor valor que deseja buscar: "))
+                for livro in catalogo:
+                    if float(livro["valor"]) <= preco:
+                        Livros.info(livro)
+                    else:
+                        print("Não existem livros com o valor menor que o inserido!")
+                        break
+            else:
+                print("Catálogo vazio!")
+        except ValueError:
+            print("\nO valor inserido não é válido!")
 
-def listar():
-    for i in produtos:
-        i.info()
+    @staticmethod
+    def pesquisa_estoque():
+        try:
+            if catalogo:
+                print("Pesquisar quantidade em estoque")
+                quantidade = float(input("==> Insira a quantidade de estoque que deseja buscar: "))
+                for livro in catalogo:
+                    if float(livro["estoque"]) >= quantidade:
+                        Livros.info(livro)
+                    else:
+                        print("Não existem livros com o valor menor que o inserido!")
+                        break
+            else:
+                print("Catálogo vazio!")
+        except ValueError:
+            print("\nO valor inserido não é válido!")
 
-
-def somar_estoque():
-    total = sum(livros.valor * livros.estoque for livros in produtos)
-    print(f"Valor total no estoque: R${total:.2f}\n")
+    @staticmethod
+    def soma_estoque():
+        if catalogo:
+            soma = 0
+            for livro in catalogo:
+                soma += float(livro["valor"] * livro["estoque"])
+            print(f"Valor total do estoque: R${soma:.2f}")
+        else:
+            print("Catálogo vazio!")
 
 
 def menu():
@@ -80,38 +172,50 @@ def menu():
           "7 – Valor total no estoque\n"
           "0 – Encerrar atividades\n")
 
-
     match input():
 
+        case "55":
+            Livros.cadastro_temp()
+            print()
+            menu()
+
         case "1":
-            cadastrar()
+            Livros.cadastrar()
+            print()
             menu()
 
         case "2":
-            listar()
+            Livros.listar()
+            print()
             menu()
 
         case "3":
-            pesquisar("nome",str(input("Insira o nome do livro: ")))
+            Livros.pesquisar_nome()
+            print()
             menu()
 
         case "4":
-            print("buscar categoria")
+            Livros.pesquisar_categoria()
+            print()
             menu()
 
         case "5":
-            menorPreco(float(input("Insira o valor: ")))
+            Livros.pesquisar_preco()
+            print()
             menu()
 
         case "6":
-            print("buscar estoque")
+            Livros.pesquisa_estoque()
+            print()
             menu()
 
         case "7":
-            somar_estoque()
+            Livros.soma_estoque()
+            print()
             menu()
 
         case "0":
+            print("\nFinalizando sistema...")
             exit()
 
         case str():
