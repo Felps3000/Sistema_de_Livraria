@@ -55,30 +55,30 @@ class Livros:
         except ValueError:
             print("\nO valor inserido não é válido!")
 
-    @staticmethod
-    def cadastro_temp():
-        cadastro1 = Livros(
-            "bicho",
-            123,
-            "jesus",
-            "asd",
-            123,
-            123,
-            123
-        )
-
-        cadastro2 = Livros(
-            "frango",
-            123,
-            "deus",
-            "asd",
-            123,
-            123,
-            123
-        )
-
-        cadastro1.catalogar()
-        cadastro2.catalogar()
+    # @staticmethod
+    # def cadastro_temp():
+    #     cadastro1 = Livros(
+    #         "Manifesto do Partido Comunista",
+    #         9788585934231,
+    #         "Boitempo",
+    #         "Sociologia/Filosofia",
+    #         1848,
+    #         49,
+    #         1000
+    #     )
+    #
+    #     cadastro2 = Livros(
+    #         "O Estado e a Revolução",
+    #         8587394991,
+    #         "Expressão Popular",
+    #         "Sociologia/Filosofia",
+    #         1917,
+    #         38.80,
+    #         1000
+    #     )
+    #
+    #     cadastro1.catalogar()
+    #     cadastro2.catalogar()
 
     @staticmethod
     def listar():
@@ -174,10 +174,10 @@ def menu():
 
     match input():
 
-        case "55":
-            Livros.cadastro_temp()
-            print()
-            menu()
+        # case "55":
+        #     Livros.cadastro_temp()
+        #     print()
+        #     menu()
 
         case "1":
             Livros.cadastrar()
