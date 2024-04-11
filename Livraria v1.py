@@ -28,13 +28,17 @@ class Livros:
 
     @staticmethod
     def info(livro):
-        print(f"\n>>>>> Cod#{livro['codigo']}\n"
-              f"Título/Editora: {livro['titulo']}/{livro['editora']}\n"
-              f"Categoria: {livro['area']}\n"
-              f"Ano: {livro['ano']}\n"
-              f"Valor: R$ {livro['ano']:.2f}\n"
-              f"Estoque: {livro['estoque']} unidades\n"
-              f"Valor total em estoque: R$ {livro['valor'] * livro['estoque']:.2f}"
+        singular = ""
+        if livro["estoque"] > 1:
+            singular = "s"
+
+        print(f"\n>>>>> Cod#{livro["codigo"]}\n"
+              f"Título/Editora: {livro["titulo"]}/{livro["editora"]}\n"
+              f"Categoria: {livro["area"]}\n"
+              f"Ano: {livro["ano"]}\n"
+              f"Valor: R${float(livro["valor"]):.2f}\n"
+              f"Estoque: {livro["estoque"]} unidade{singular}\n"
+              f"Valor total em estoque: R${float(livro["valor"]) * livro["estoque"]:.2f}"
               )
 
     @staticmethod
@@ -46,7 +50,7 @@ class Livros:
                 str((input("==> Insira a editora do livro: "))),
                 str((input("==> Insira a área do livro: "))),
                 int((input("==> Insira o ano do livro: "))),
-                float((input("==> Insira o valor do livro: "))),
+                str(input("==> Insira o valor do livro: ").strip("r$")).lower(),
                 int((input("==> Insira a quantidade disponível de livros: "))))
 
             cadastro.catalogar()
