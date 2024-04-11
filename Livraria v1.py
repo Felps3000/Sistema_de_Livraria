@@ -61,17 +61,17 @@ class Livros:
             "bicho",
             123,
             "jesus",
-            "biologia",
+            "asd",
             123,
             123,
             123
         )
 
         cadastro2 = Livros(
-            "bicho",
+            "frango",
             123,
             "deus",
-            "humanidade",
+            "asd",
             123,
             123,
             123
@@ -97,7 +97,7 @@ class Livros:
                 if livro["titulo"].lower() == titulo.lower():
                     Livros.info(livro)
                 else:
-                    print("Livro não encontrado!")
+                    print("Livro(s) não encontrado(s)!")
                     break
         else:
             print("Catálogo vazio!")
@@ -143,7 +143,7 @@ class Livros:
                     if float(livro["estoque"]) >= quantidade:
                         Livros.info(livro)
                     else:
-                        print("Não existem livros com o valor menor que o inserido!")
+                        print("\nNão existem quantidade igual ou superior de livros que o valor inserido!")
                         break
             else:
                 print("Catálogo vazio!")
