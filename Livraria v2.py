@@ -162,9 +162,10 @@ class Livros:
     @staticmethod
     def soma_estoque():
         if catalogo:
-            soma = 0
+            soma = []
             for livro in catalogo:
-                soma += float(livro["valor"] * livro["estoque"])
+                soma.append(float(livro["valor"] * livro["estoque"]))
+                sum(soma)
             print(f"Valor total do estoque: R${soma:.2f}")
         else:
             print("Catálogo vazio!")
