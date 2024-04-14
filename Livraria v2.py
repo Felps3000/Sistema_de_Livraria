@@ -1,6 +1,9 @@
 # Sistema de Livraria Versão 2.0
 
 import re
+import locale
+
+locale.setlocale(locale.LC_ALL, "pt_BR.UTF-8")
 
 catalogo = []
 
@@ -40,9 +43,9 @@ class Livros:
               f"Título/Editora: {livro["titulo"]}/{livro["editora"]}\n"
               f"Categoria: {livro["area"]}\n"
               f"Ano: {livro["ano"]}\n"
-              f"Valor: R${float(livro["valor"]):.2f}\n"
+              f"Valor: {locale.currency(float(livro["valor"]) * livro["estoque"], grouping=True)}\n"
               f"Estoque: {livro["estoque"]} unidade{singular}\n"
-              f"Valor total em estoque: R${float(livro["valor"]) * livro["estoque"]:.2f}"
+              f"Valor total em estoque: {locale.currency(float(livro["valor"]) * livro["estoque"], grouping=True)}"
               )
 
     @staticmethod
@@ -63,31 +66,6 @@ class Livros:
 
         except ValueError:
             print("\nO valor inserido não é válido!")
-
-    # @staticmethod
-    # def cadastro_temp():
-    #     cadastro1 = Livros(
-    #         "Manifesto do Partido Comunista",
-    #         9788585934231,
-    #         "Boitempo",
-    #         "Sociologia/Filosofia",
-    #         1848,
-    #         49,
-    #         1000
-    #     )
-    #
-    #     cadastro2 = Livros(
-    #         "O Estado e a Revolução",
-    #         8587394991,
-    #         "Expressão Popular",
-    #         "Sociologia/Filosofia",
-    #         1917,
-    #         38.80,
-    #         1000
-    #     )
-    #
-    #     cadastro1.catalogar()
-    #     cadastro2.catalogar()
 
     @staticmethod
     def listar():
@@ -120,7 +98,7 @@ class Livros:
                 if re.search(categoria, livro["area"], re.IGNORECASE):
                     Livros.info(livro)
                 else:
-                    print("Categoria não encontrada!"")
+                    print("Categoria não encontrada!")
                     break
         else:
             print("Catálogo vazio!")
@@ -164,9 +142,8 @@ class Livros:
         if catalogo:
             soma = []
             for livro in catalogo:
-                soma.append(float(livro["valor"] * livro["estoque"]))
-                sum(soma)
-            print(f"Valor total do estoque: R${soma:.2f}")
+                soma.append(livro["valor"] * livro["estoque"])
+            print(f"Valor total do estoque: {locale.currency(sum(soma), grouping=True)}")
         else:
             print("Catálogo vazio!")
 
@@ -192,15 +169,16 @@ class Livros:
     def atualizar_arquivo():
         with open("Livrariav2_estoque.csv", "w", encoding="utf-8") as arquivo:
             for livro in catalogo:
-                codigo = livro['codigo']
-                titulo = livro['titulo']
-                ano = livro['ano']
-                area = livro['area']
-                editora = livro['editora']
-                valor = livro['valor']
-                estoque = livro['estoque']
+                codigo = livro["codigo"]
+                titulo = livro["titulo"]
+                ano = livro["ano"]
+                area = livro["area"]
+                editora = livro["editora"]
+                valor = livro["valor"]
+                estoque = livro["estoque"]
                 ordem = f"{codigo},{titulo},{ano},{area},{editora},{valor},{estoque}\n"
                 arquivo.write(ordem)
+        Livros.alteracao = False
         print("\nDados salvos com sucesso!")
 
     @staticmethod
@@ -237,11 +215,6 @@ def menu():
           "0 – Encerrar atividades\n")
 
     match input():
-
-        # case "55":
-        #     Livros.cadastro_temp()
-        #     print()
-        #     menu()
 
         case "1":
             Livros.cadastrar()
