@@ -21,16 +21,16 @@ class Livros:
         self.estoque = estoque
 
     def catalogar(self):
+        valor = str(self.valor).replace(",", ".")
         livro = {
             "titulo": self.titulo,
             "codigo": self.codigo,
             "editora": self.editora,
             "area": self.area,
             "ano": self.ano,
-            "valor": self.valor,
+            "valor": valor,
             "estoque": self.estoque
         }
-
         catalogo.append(livro)
 
     @staticmethod
@@ -44,7 +44,7 @@ class Livros:
               f"Título/Editora: {livro["titulo"]}/{livro["editora"]}\n"
               f"Categoria: {livro["area"]}\n"
               f"Ano: {livro["ano"]}\n"
-              f"Valor: {locale.currency(valor_float)}\n"
+              f"Valor: {locale.currency(valor_float, grouping=True)}\n"
               f"Estoque: {livro["estoque"]} unidade{singular}\n"
               f"Valor total em estoque: {locale.currency(valor_float * livro["estoque"], grouping=True)}"
               )
@@ -52,19 +52,21 @@ class Livros:
     @staticmethod
     def cadastrar():
         try:
-            cadastro = Livros(
-                str((input("==> Insira o título do livro: "))),
-                int((input("==> Insira o código do livro: "))),
-                str((input("==> Insira a editora do livro: "))),
-                str((input("==> Insira a área do livro: "))),
-                int((input("==> Insira o ano do livro: "))),
-                str(input("==> Insira o valor do livro: ")),
-                int((input("==> Insira a quantidade disponível de livros: "))))
+            titulo = str(input("==> Insira o título do livro: "))
+            codigo = int(input("==> Insira o código do livro: "))
+            editora = str(input("==> Insira a editora do livro: "))
+            area = str(input("==> Insira a área do livro: "))
+            ano = int(input("==> Insira o ano do livro: "))
+            valor = str(input("==> Insira o valor do livro: "))
+            quantidade = int(input("==> Insira a quantidade disponível de livros: "))
+            cadastro = Livros(titulo, codigo, editora, area, ano, valor, quantidade)
             cadastro.catalogar()
             Livros.alteracao = True
             print("\nLivro cadastrado com sucesso!")
         except ValueError:
             print("\nO valor inserido não é válido!")
+            print("\nTente Novamente!\n")
+            Livros.cadastrar()
 
     @staticmethod
     def listar():
@@ -129,7 +131,7 @@ class Livros:
                     if float(livro["estoque"]) >= quantidade:
                         Livros.info(livro)
                     else:
-                        print("\nNão existem quantidade igual ou superior de livros que o valor inserido!")
+                        print("\nNão existe quantidade igual ou superior de livros que o valor inserido!")
                         break
             else:
                 print("Catálogo vazio!")
@@ -156,8 +158,9 @@ class Livros:
                 for linha in linhas:
                     dados = linha.split(",")
                     codigo, titulo, ano, area, editora, valor, estoque = dados
-                    real = valor.lower()
-                    livro = Livros(titulo, int(codigo), editora, area, int(ano), float(real.strip("r$")), int(estoque))
+                    valor_str = valor.lower().strip("r$")
+                    valor_float = float(valor_str)
+                    livro = Livros(titulo, int(codigo), editora, area, int(ano), valor_float, int(estoque))
                     livro.catalogar()
                     if not catalogo:
                         Livros.alteracao = True
@@ -177,8 +180,10 @@ class Livros:
                 area = livro["area"]
                 editora = livro["editora"]
                 valor = livro["valor"]
+                valor_str = valor.lower().strip("r$")
+                valor_float = float(valor_str)
                 estoque = livro["estoque"]
-                ordem = f"{codigo},{titulo},{ano},{area},{editora},{valor},{estoque}\n"
+                ordem = f"{codigo},{titulo},{ano},{area},{editora},R${valor_float:.2f},{estoque}\n"
                 arquivo.write(ordem)
         Livros.alteracao = False
         print("\nDados salvos com sucesso!")
