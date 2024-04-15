@@ -38,14 +38,15 @@ class Livros:
         singular = ""
         if livro["estoque"] > 1:
             singular = "s"
-
+        valor_str = str(livro["valor"]).lower().strip("r$")
+        valor_float = float(valor_str)
         print(f"\n>>>>> Cod#{livro["codigo"]}\n"
               f"Título/Editora: {livro["titulo"]}/{livro["editora"]}\n"
               f"Categoria: {livro["area"]}\n"
               f"Ano: {livro["ano"]}\n"
-              f"Valor: {locale.currency(float(livro["valor"]) * livro["estoque"], grouping=True)}\n"
+              f"Valor: {locale.currency(valor_float)}\n"
               f"Estoque: {livro["estoque"]} unidade{singular}\n"
-              f"Valor total em estoque: {locale.currency(float(livro["valor"]) * livro["estoque"], grouping=True)}"
+              f"Valor total em estoque: {locale.currency(valor_float * livro["estoque"], grouping=True)}"
               )
 
     @staticmethod
@@ -57,20 +58,18 @@ class Livros:
                 str((input("==> Insira a editora do livro: "))),
                 str((input("==> Insira a área do livro: "))),
                 int((input("==> Insira o ano do livro: "))),
-                str(input("==> Insira o valor do livro: ").strip("r$")).lower(),
+                str(input("==> Insira o valor do livro: ")),
                 int((input("==> Insira a quantidade disponível de livros: "))))
-
             cadastro.catalogar()
             Livros.alteracao = True
             print("\nLivro cadastrado com sucesso!")
-
         except ValueError:
             print("\nO valor inserido não é válido!")
 
     @staticmethod
     def listar():
         if catalogo:
-            for i, livros in enumerate(catalogo, start=1):
+            for i, livros in enumerate(catalogo):
                 Livros.info(livros)
         else:
             print("Catálogo vazio!")
@@ -142,7 +141,9 @@ class Livros:
         if catalogo:
             soma = []
             for livro in catalogo:
-                soma.append(livro["valor"] * livro["estoque"])
+                valor_str = str(livro["valor"]).lower().strip("r$")
+                valor_float = float(valor_str)
+                soma.append(valor_float * livro["estoque"])
             print(f"Valor total do estoque: {locale.currency(sum(soma), grouping=True)}")
         else:
             print("Catálogo vazio!")
@@ -158,7 +159,8 @@ class Livros:
                     real = valor.lower()
                     livro = Livros(titulo, int(codigo), editora, area, int(ano), float(real.strip("r$")), int(estoque))
                     livro.catalogar()
-                    Livros.alteracao = True
+                    if not catalogo:
+                        Livros.alteracao = True
             print("Arquivo carregado com sucesso!")
         except FileNotFoundError:
             print("Arquivo não encontrado!")
