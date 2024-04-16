@@ -10,7 +10,7 @@ def cadastrar_livro():
         Livro.codigo = int(input("==> Insira o código do livro: "))
         Livro.editora = input("==> Insira a editora do livro: ")
         Livro.area = input("==> Insira a área do livro: ")
-        Livro.ano = input("==> Insira o ano do livro: ")
+        Livro.ano = int(input("==> Insira o ano do livro: "))
         Livro.valor = float(input("==> Insira o valor do livro: "))
         Livro.estoque = int(input("==> Insira a quantidade disponível de livros: "))
         livro_cadastrado = Livro(Livro.titulo,
