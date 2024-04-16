@@ -56,14 +56,15 @@ def pesquisar_categoria():
     if livros:
         print("Pesquisar categoria")
         categoria = input("==> Insira a categoria do(s) livro(s): ")
-        encontrado = False
+        resultados = []
         for livro in livros:
             if re.search(categoria, livro.area, re.IGNORECASE):
-                Livro.info(livro)
-                encontrado = True
-            if not encontrado:
-                print("\nNenhum resultado encontrado!")
-                break
+                resultados.append(livro)
+        if resultados:
+            for resultado in resultados:
+                Livro.info(resultado)
+        else:
+            print("\nNenhum resultado encontrado!")
     else:
         print("Catálogo vazio!")
 
@@ -71,14 +72,17 @@ def pesquisar_categoria():
 def pesquisar_preco():
     if livros:
         print("Pesquisar preço")
+        resultados = []
         try:
-            preco = float(input("==> Insira o menor valor que deseja buscar: "))
+            preco = float(input("==> Insira o maior valor que deseja buscar: "))
             for livro in livros:
                 if livro.valor < preco:
-                    Livro.info(livro)
-                else:
-                    print("\nNenhum resultado encontrado!")
-                    break
+                    resultados.append(livro)
+            if resultados:
+                for resultado in resultados:
+                    Livro.info(resultado)
+            else:
+                print("\nNenhum resultado encontrado!")
         except ValueError:
             print("\nO valor inserido não é válido!")
             print("\nTente Novamente!\n")
@@ -91,7 +95,7 @@ def pesquisar_estoque():
     if livros:
         print("Pesquisar quantidade em estoque")
         try:
-            estoque = int(input("==> Insira a quantidade de estoque que deseja buscar: "))
+            estoque = int(input("==> Insira a quantidade mínima de estoque que deseja buscar: "))
             for livro in livros:
                 if livro.estoque > estoque:
                     Livro.info(livro)
