@@ -2,6 +2,7 @@ import re
 from Livro import *
 
 livros = []
+alteracao = False
 
 
 def cadastrar_livro():
@@ -21,6 +22,8 @@ def cadastrar_livro():
                                  Livro.valor,
                                  Livro.estoque)
         livros.append(livro_cadastrado)
+        global alteracao
+        alteracao = True
         print("\nLivro cadastrado com sucesso!")
     except ValueError:
         print("\nO valor inserido não é válido!")
@@ -39,15 +42,16 @@ def listar_livros():
 def pesquisar_nome():
     if livros:
         print("Pesquisar nome")
-        nome = input("==> Insira o nome do livro: ")
-        encontrado = False
+        nome = input("==> Insira o nome do(s) livro(s): ")
+        resultados = []
         for livro in livros:
             if re.search(nome, livro.titulo, re.IGNORECASE):
-                Livro.info(livro)
-                encontrado = True
-            if not encontrado:
-                print("\nNenhum resultado encontrado!")
-                break
+                resultados.append(livro)
+        if resultados:
+            for resultado in resultados:
+                Livro.info(resultado)
+        else:
+            print("\nNenhum resultado encontrado!")
     else:
         print("Catálogo vazio!")
 
@@ -94,14 +98,17 @@ def pesquisar_preco():
 def pesquisar_estoque():
     if livros:
         print("Pesquisar quantidade em estoque")
+        resultados = []
         try:
             estoque = int(input("==> Insira a quantidade mínima de estoque que deseja buscar: "))
             for livro in livros:
                 if livro.estoque > estoque:
-                    Livro.info(livro)
-                else:
-                    print("\nNenhum resultado encontrado!")
-                    break
+                    resultados.append(livro)
+            if resultados:
+                for resultado in resultados:
+                    Livro.info(resultado)
+            else:
+                print("\nNenhum resultado encontrado!")
         except ValueError:
             print("\nO valor inserido não é válido!")
             print("\nTente Novamente!\n")
@@ -133,5 +140,74 @@ def cadastrar_temp():
                   "Sociologia/Filosofia",
                   1917,
                   38,
-                  1000)
+                  2000)
     livros.append(livro)
+
+
+def carregar_arquivo():
+    try:
+        with open("estoque.csv", "r", encoding="utf-8") as arquivo:
+            linhas = arquivo.readlines()
+            for linha in linhas:
+                dados = linha.split(",")
+                codigo, titulo, ano, area, editora, valor, estoque = dados
+                livro_cadastrado = Livro(titulo,
+                                         int(codigo),
+                                         editora,
+                                         area,
+                                         int(ano),
+                                         float(valor.strip("R$")),
+                                         int(estoque))
+                livros.append(livro_cadastrado)
+                global alteracao
+                alteracao = True
+        print("Arquivo carregado com sucesso!")
+    except FileNotFoundError:
+        print("Arquivo não encontrado!")
+    except ValueError:
+        print("Arquivo em formato inválido!")
+
+
+def salvar_arquivo(parametro):
+    with open("estoque.csv", parametro, encoding="utf-8") as arquivo:
+        for livro in livros:
+            codigo = livro.codigo
+            titulo = livro.titulo
+            ano = livro.ano
+            area = livro.area
+            editora = livro.editora
+            valor = livro.valor
+            estoque = livro.estoque
+            ordem = f"{codigo},{titulo},{ano},{area},{editora},R${valor:.2f},{estoque}\n"
+            arquivo.write(ordem)
+            global alteracao
+            alteracao = False
+    print("\nDados salvos com sucesso!")
+
+
+def atualizar_arquivo():
+    if livros:
+        try:
+            salvar_arquivo("x")  # "x" open for exclusive creation, failing if the file already exists
+        except FileExistsError:
+            salvar_arquivo("a")  # "a" open for writing, appending to the end of file if it exists
+    else:
+        print("Catálogo vazio!")
+
+
+def checar_alteracao():
+    if alteracao:
+        print("==> Há dados não salvos, deseja salvar antes de sair?\n[S]im | [N]ão")
+        match input().lower():
+            case "s":
+                atualizar_arquivo()
+                print("\nFinalizando sistema...")
+                exit()
+            case "n":
+                print("\nFinalizando sistema...")
+                exit()
+            case str():
+                print("\nOpção inválida!\n")
+    else:
+        print("\nFinalizando sistema...")
+        exit()
