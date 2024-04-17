@@ -213,6 +213,7 @@ def checar_alteracao():
                 exit()
             case str():
                 print("\nOpção inválida!\n")
+                print("Arquivo não salvo!\n")
     else:
         print("\nFinalizando sistema...")
         exit()
