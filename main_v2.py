@@ -68,6 +68,7 @@ def menu():
 
         case "0":
             checar_alteracao()
+            menu()
 
         case str():
             print("\nOpção inválida!\n")

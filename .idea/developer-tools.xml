@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DeveloperToolsToolWindowSettingsV1" lastSelectedContentNodeId="lorem-ipsum-generator">
+    <developerToolsConfigurations>
+      <developerToolConfiguration developerToolId="qr-code-generator" id="d5507f78-cd12-4d97-9d59-600f63060434" name="Workbench">
+        <properties>
+          <property key="format" type="CONFIGURATION" value="dev.turingcomplete.intellijdevelopertoolsplugin._internal.tool.ui.generator.BarcodeGenerator$Format|CODE_128" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="color-picker" id="784ac094-e3aa-4e30-b765-9ee25603b22f" name="Workbench">
+        <properties>
+          <property key="selectedColor" type="INPUT" value="com.intellij.ui.JBColor|-7853371" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="url-encoding-encoder-decoder" id="c76d0df0-89f4-4fe3-9d8e-83ed182a7e53" name="Workbench">
+        <properties>
+          <property key="sourceText" type="INPUT" value="kotlin.String|fdgdfgdfg.copm" />
+          <property key="targetText" type="INPUT" value="kotlin.String|fdgdfgdfg.copm" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="uuid-generator" id="df26a740-32ea-46e8-ba6c-2e0711a42488" name="Workbench">
+        <properties>
+          <property key="version" type="CONFIGURATION" value="dev.turingcomplete.intellijdevelopertoolsplugin._internal.tool.ui.generator.uuid.UuidVersion|V7" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="text-case-transformer" id="4b29ff22-980a-4516-977b-8fd4e2325db8" name="Workbench">
+        <properties>
+          <property key="outputTextCase" type="CONFIGURATION" value="dev.turingcomplete.intellijdevelopertoolsplugin._internal.tool.ui.transformer.TextCaseTransformer$TextCase|ALTERNATING_CASE" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="lorem-ipsum-generator" id="7cc5d9f8-0882-4b8e-a70d-aa8bdb039652" name="Workbench">
+        <properties>
+          <property key="generatedTextKind" type="CONFIGURATION" value="dev.turingcomplete.intellijdevelopertoolsplugin._internal.tool.ui.generator.LoremIpsumGenerator$TextMode|BULLETS" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="sql-formatting" id="5e097dc8-90b7-491f-94ce-0753504e8816" name="Workbench">
+        <properties>
+          <property key="dialect" type="CONFIGURATION" value="com.github.vertical_blank.sqlformatter.languages.Dialect|MySql" />
+        </properties>
+      </developerToolConfiguration>
+      <developerToolConfiguration developerToolId="xml-text-escape" id="59de07c4-2bad-4fb4-9c4e-c39c0af70fe0" name="Workbench">
+        <properties>
+          <property key="sourceText" type="INPUT" value="kotlin.String|cvbcvb" />
+          <property key="targetText" type="INPUT" value="kotlin.String|cvbcvb" />
+        </properties>
+      </developerToolConfiguration>
+    </developerToolsConfigurations>
+  </component>
+</project>

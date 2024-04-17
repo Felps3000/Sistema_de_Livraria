@@ -48,6 +48,7 @@ def pesquisar_nome():
             if re.search(nome, livro.titulo, re.IGNORECASE):
                 resultados.append(livro)
         if resultados:
+            print("\nResultado(s) econtrado(s):")
             for resultado in resultados:
                 Livro.info(resultado)
         else:
@@ -65,6 +66,7 @@ def pesquisar_categoria():
             if re.search(categoria, livro.area, re.IGNORECASE):
                 resultados.append(livro)
         if resultados:
+            print("\nResultado(s) econtrado(s):")
             for resultado in resultados:
                 Livro.info(resultado)
         else:
@@ -83,6 +85,7 @@ def pesquisar_preco():
                 if livro.valor < preco:
                     resultados.append(livro)
             if resultados:
+                print("\nResultado(s) econtrado(s):")
                 for resultado in resultados:
                     Livro.info(resultado)
             else:
@@ -105,6 +108,7 @@ def pesquisar_estoque():
                 if livro.estoque > estoque:
                     resultados.append(livro)
             if resultados:
+                print("\nResultado(s) econtrado(s):")
                 for resultado in resultados:
                     Livro.info(resultado)
             else:
@@ -188,9 +192,10 @@ def salvar_arquivo(parametro):
 def atualizar_arquivo():
     if livros:
         try:
-            salvar_arquivo("x")  # "x" open for exclusive creation, failing if the file already exists
+            open("estoque.csv", "x", encoding="utf-8")  # "x" cria arquivo ou retorna falha caso o arquivo já exista
+            salvar_arquivo("x")
         except FileExistsError:
-            salvar_arquivo("a")  # "a" open for writing, appending to the end of file if it exists
+            salvar_arquivo("a")  # "a" abre o arquivo e acrescenta os valores no final dele
     else:
         print("Catálogo vazio!")
 
