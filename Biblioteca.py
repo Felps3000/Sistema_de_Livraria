@@ -2,7 +2,7 @@ import re
 from Livro import *
 
 livros = []
-alteracao = False
+alteracaoEstoque = False
 
 
 def cadastrar_livro():
@@ -22,8 +22,8 @@ def cadastrar_livro():
                                  Livro.valor,
                                  Livro.estoque)
         livros.append(livro_cadastrado)
-        global alteracao
-        alteracao = True
+        global alteracaoEstoque
+        alteracaoEstoque = True
         print("\nLivro cadastrado com sucesso!")
     except ValueError:
         print("\nO valor inserido não é válido!")
@@ -150,43 +150,73 @@ def cadastrar_temp():
 
 def carregar_arquivo():
     try:
-        with open("estoque.csv", "r", encoding="utf-8") as arquivo:
-            linhas = arquivo.readlines()
-            for linha in linhas:
-                dados = linha.split(",")
-                codigo, titulo, ano, area, editora, valor, estoque = dados
-                livro_cadastrado = Livro(titulo,
-                                         int(codigo),
-                                         editora,
-                                         area,
-                                         int(ano),
-                                         float(valor.strip("R$")),
-                                         int(estoque))
-                livros.append(livro_cadastrado)
-                global alteracao
-                alteracao = True
-        print("Arquivo carregado com sucesso!")
-    except FileNotFoundError:
-        print("Arquivo não encontrado!")
+        cod_estoque = int(input("Qual arquivo de estoque você deseja carregar?\n"
+                                "==> Estoque [1] | Estoque [2] | Estoque [3]\n"))
+        match cod_estoque:
+            case 1 | 2 | 3:
+                cod = f"estoque{cod_estoque}.csv"
+                try:
+                    with open(cod, "r", encoding="utf-8") as arquivo:
+                        linhas = arquivo.readlines()
+                        for linha in linhas:
+                            dados = linha.split(",")
+                            codigo, titulo, ano, area, editora, valor, estoque = dados
+                            livro_cadastrado = Livro(titulo,
+                                                     int(codigo),
+                                                     editora,
+                                                     area,
+                                                     int(ano),
+                                                     float(valor.strip("R$")),
+                                                     int(estoque))
+                            livros.append(livro_cadastrado)
+                            global alteracaoEstoque
+                            alteracaoEstoque = True
+                    print("\nArquivo carregado com sucesso!")
+                except FileNotFoundError:
+                    print("\nArquivo não encontrado!")
+                except ValueError:
+                    print("\nArquivo em formato inválido!")
+            case str():
+                print("\nOpção inválida!\n")
+                carregar_arquivo()
+            case _:
+                print("\nOpção inválida!\n")
+                carregar_arquivo()
     except ValueError:
-        print("Arquivo em formato inválido!")
+        print("\nOpção inválida!\n")
+        carregar_arquivo()
 
 
 def salvar_arquivo(parametro):
-    with open("estoque.csv", parametro, encoding="utf-8") as arquivo:
-        for livro in livros:
-            codigo = livro.codigo
-            titulo = livro.titulo
-            ano = livro.ano
-            area = livro.area
-            editora = livro.editora
-            valor = livro.valor
-            estoque = livro.estoque
-            ordem = f"{codigo},{titulo},{ano},{area},{editora},R${valor:.2f},{estoque}\n"
-            arquivo.write(ordem)
-            global alteracao
-            alteracao = False
-    print("\nDados salvos com sucesso!")
+    try:
+        cod_estoque = int(input("==> Em qual arquivo de estoque você deseja salvar?\n"
+                                "Estoque [1] | Estoque [2] | Estoque [3]\n"))
+        match cod_estoque:
+            case 1 | 2 | 3:
+                cod = f"estoque{cod_estoque}.csv"
+                with open(cod, parametro, encoding="utf-8") as arquivo:
+                    for livro in livros:
+                        codigo = livro.codigo
+                        titulo = livro.titulo
+                        ano = livro.ano
+                        area = livro.area
+                        editora = livro.editora
+                        valor = livro.valor
+                        estoque = livro.estoque
+                        ordem = f"{codigo},{titulo},{ano},{area},{editora},R${valor:.2f},{estoque}\n"
+                        arquivo.write(ordem)
+                        global alteracaoEstoque
+                        alteracaoEstoque = False
+                print("\nDados salvos com sucesso!")
+            case str():
+                print("\nOpção inválida!\n")
+                atualizar_arquivo()
+            case _:
+                print("\nOpção inválida!\n")
+                atualizar_arquivo()
+    except ValueError:
+        print("\nOpção inválida!\n")
+        atualizar_arquivo()
 
 
 def atualizar_arquivo():
@@ -201,10 +231,11 @@ def atualizar_arquivo():
 
 
 def checar_alteracao():
-    if alteracao:
+    if alteracaoEstoque:
         print("==> Há dados não salvos, deseja salvar antes de sair?\n[S]im | [N]ão")
         match input().lower():
             case "s":
+                print()
                 atualizar_arquivo()
                 print("\nFinalizando sistema...")
                 exit()
